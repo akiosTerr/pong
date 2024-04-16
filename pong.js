@@ -11,17 +11,32 @@ function moveBall() {
     let cx = parseFloat(ball.getAttribute('cx'));
     let cy = parseFloat(ball.getAttribute('cy'));
 
+    // Update ball position
+    cx += ballSpeedX;
+    cy += ballSpeedY;
+
     // Check for wall collisions
-    if (cx <= 0 || cx >= 800) {
-        ballSpeedX *= -1;
-    }
     if (cy <= 0 || cy >= 400) {
         ballSpeedY *= -1;
     }
 
+    // Collision detection with paddles
+    let paddleAY = parseFloat(paddleA.getAttribute('y'));
+    let paddleBY = parseFloat(paddleB.getAttribute('y'));
+
+    // Collision with left paddle
+    if (cx <= 40 && cy >= paddleAY && cy <= (paddleAY + 100)) {
+        ballSpeedX = Math.abs(ballSpeedX);
+    }
+
+    // Collision with right paddle
+    if (cx >= 760 && cy >= paddleBY && cy <= (paddleBY + 100)) {
+        ballSpeedX = -Math.abs(ballSpeedX);
+    }
+
     // Move the ball
-    ball.setAttribute('cx', cx + ballSpeedX);
-    ball.setAttribute('cy', cy + ballSpeedY);
+    ball.setAttribute('cx', cx);
+    ball.setAttribute('cy', cy);
 
     requestAnimationFrame(moveBall);
 }
